@@ -1,0 +1,4 @@
+ caching implementation at each level(corrector, spinner)
+ optimizations in terms of function call & computation 
+ class for user writing style selection
+ Results: comparison based on - sentiment score
