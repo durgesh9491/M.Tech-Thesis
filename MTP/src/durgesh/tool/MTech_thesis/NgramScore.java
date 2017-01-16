@@ -2,15 +2,6 @@ package durgesh.tool.MTech_thesis;
 
 public abstract class NgramScore {
 
-	public static String capitalize(boolean flag, String s) {
-		if (s.length() == 0)
-			return s;
-		if (flag)
-			return s.substring(0, 1).toUpperCase()
-					+ s.substring(1).toLowerCase();
-		return s;
-	}
-
 	public static final double unigramScore(String[] tokens, int idx,
 			String target) {
 		Object obj = ProcessDataSet.uniGram.get(target);
@@ -103,11 +94,6 @@ public abstract class NgramScore {
 				+ tokens[idx - 3] + " " + tokens[idx - 2] + " "
 				+ tokens[idx - 1] + " " + target);
 		double res = num / den;
-		/*
-		 * System.out.println(tokens[idx - 4] + " " + tokens[idx - 3] + " " +
-		 * tokens[idx - 2] + " " + tokens[idx - 1] + " " + target + num + " " +
-		 * den);
-		 */
 		return res;
 	}
 }

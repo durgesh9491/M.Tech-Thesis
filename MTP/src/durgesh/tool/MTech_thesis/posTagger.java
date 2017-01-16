@@ -13,7 +13,6 @@ public class posTagger {
 		pos.put("JJ", true);
 		pos.put("JJR", true);
 		pos.put("JJS", true);
-		// pos.put("RB", true);
 		pos.put("RBR", true);
 		pos.put("RBS", true);
 		pos.put("VB", true);
@@ -21,7 +20,9 @@ public class posTagger {
 		pos.put("VBG", true);
 		pos.put("VBN", true);
 		pos.put("VBP", true);
-		// pos.put("VBZ", true);
+		/*
+		 * pos.put("RB", true); pos.put("VBZ", true);
+		 */
 	}
 
 	public static Boolean isCandidatePOS(MaxentTagger tagger, String target) {

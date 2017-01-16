@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 
 public class ProcessDataSet {
-
 	public final static HashMap<String, Integer> uniGram = new HashMap<String, Integer>();
 	public final static HashMap<String, Integer> biGram = new HashMap<String, Integer>();
 	public final static HashMap<String, Integer> triGram = new HashMap<String, Integer>();
@@ -16,6 +15,25 @@ public class ProcessDataSet {
 	public final static HashMap<String, Integer> fiveGram = new HashMap<String, Integer>();
 	public final static HashMap<String, Vector<String>> synonyms = new HashMap<String, Vector<String>>();
 	public static int totalwords;
+	public final static int NgramsLimit = 5;
+	public final static double[] ngramCoefficient = new double[NgramsLimit +1];
+    
+	public static void NgramCoefficient() {
+		double select = 0, mx = 0;
+		for (double i = 0; i < 1; i += 0.000001) {
+			double res = 0;
+			for (int j = 1; j <= NgramsLimit; j++) {
+				res += Math.pow(i, j);
+			}
+			if (res <= 1 && mx < res) {
+				select = i;
+				mx = res;
+			}
+		}
+		for (int i = 1; i <= NgramsLimit; i++) {
+			ngramCoefficient[i] = Math.pow(select, NgramsLimit - i + 1);
+		}
+	}
 
 	public static void Unigram(String file) {
 		Scanner scanner = null;

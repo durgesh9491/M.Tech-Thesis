@@ -50,28 +50,28 @@ class SpellCorrector extends NgramScore {
 
 	public static final String correct(String[] tokens, int idx, String target) {
 		String correctedWord = target;
-		if (ProcessDataSet.uniGram.containsKey(target) == true) {
-			return target;
+		if (ProcessDataSet.uniGram.containsKey(correctedWord) == true) {
+			return correctedWord;
 		}
 		ArrayList<String> list = edits(target);
 		HashMap<Integer, String> candidates = new HashMap<Integer, String>();
-		candidates = SpellCorrector.findCandidates(target, list);
+		candidates = findCandidates(correctedWord, list);
 
 		if (candidates.isEmpty()) {
 			candidates = SpellCorrector.findNextCandidates(list);
 		}
-		double maxi = 0.0, p = 0.5;
-		final double c_1 = Math.pow(p, 5);
-		final double c_2 = Math.pow(p, 4);
-		final double c_3 = Math.pow(p, 3);
-		final double c_4 = Math.pow(p, 2);
-		final double c_5 = Math.pow(p, 1);
+		double maxi = 0.0;
 
 		for (Map.Entry<Integer, String> itr : candidates.entrySet()) {
-			double val = c_1 * unigramScore(tokens, idx, itr.getValue()) + c_2
-					* bigramScore(tokens, idx, itr.getValue()) + c_3
-					* trigramScore(tokens, idx, itr.getValue()) + c_4
-					* fourgramScore(tokens, idx, itr.getValue()) + c_5
+			double val = ProcessDataSet.ngramCoefficient[1]
+					* unigramScore(tokens, idx, itr.getValue())
+					+ ProcessDataSet.ngramCoefficient[2]
+					* bigramScore(tokens, idx, itr.getValue())
+					+ ProcessDataSet.ngramCoefficient[3]
+					* trigramScore(tokens, idx, itr.getValue())
+					+ ProcessDataSet.ngramCoefficient[4]
+					* fourgramScore(tokens, idx, itr.getValue())
+					+ ProcessDataSet.ngramCoefficient[5]
 					* fivegramScore(tokens, idx, itr.getValue());
 			if (val > maxi) {
 				correctedWord = itr.getValue().toString();

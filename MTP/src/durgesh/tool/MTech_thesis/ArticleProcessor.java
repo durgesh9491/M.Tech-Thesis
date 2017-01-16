@@ -95,6 +95,7 @@ public class ArticleProcessor {
 		ProcessDataSet.Fourgram(fourGramPath);
 		ProcessDataSet.Fivegram(fiveGramPath);
 		ProcessDataSet.Synonyms(synPath);
+		ProcessDataSet.NgramCoefficient();
 	}
 
 	public static void main(String[] args) throws IOException {
