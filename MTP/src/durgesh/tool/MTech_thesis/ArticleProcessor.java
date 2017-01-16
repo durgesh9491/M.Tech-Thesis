@@ -9,7 +9,7 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class ArticleProcessor {
 
-	private static String spellProcessor(String article) {
+/*	private static String spellProcessor(String article) {
 		String correctArticle = null;
 		String[] tokens = article.split(" ");
 		int idx = 0;
@@ -22,7 +22,7 @@ public class ArticleProcessor {
 			idx += 1;
 		}
 		return correctArticle;
-	}
+	}*/
 
 	@SuppressWarnings("resource")
 	public static String cleanInputArticle(String inpPath) {
@@ -98,7 +98,7 @@ public class ArticleProcessor {
 		ProcessDataSet.NgramCoefficient();
 	}
 
-	public static void main(String[] args) throws IOException {
+/*	public static void main(String[] args) throws IOException {
 		init();
 		String inpPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/article.txt";
 		String correctArticle = spellProcessor(cleanInputArticle(inpPath));
@@ -107,5 +107,5 @@ public class ArticleProcessor {
 		String finalArticle = spinProcessor(correctArticle);
 		System.out.println(finalArticle);
 		System.out.println("Process Done !!!");
-	}
+	}*/
 }
