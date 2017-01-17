@@ -4,7 +4,7 @@ import java.util.HashMap;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class posTagger {
-	public final static HashMap<String, Boolean> pos = new HashMap<String, Boolean>();
+	private final static HashMap<String, Boolean> pos = new HashMap<String, Boolean>();
 
 	public static void selectPOS() {
 		/*

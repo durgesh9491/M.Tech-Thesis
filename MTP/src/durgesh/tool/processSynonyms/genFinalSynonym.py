@@ -1,8 +1,8 @@
 from nltk.corpus import wordnet
 import sys
 
-finp = open('/home/durgesh9491/workspace/MTP/src/durgesh/tool/processSynonyms/candidateWordSynonyms.txt')
-fout = open("/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/cleanSynonyms.txt", 'w')
+finp = open('/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/Dictionary.txt')
+fout = open("/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/cleanSynonyms1.txt", 'w')
 
 sys.stdout = fout
 

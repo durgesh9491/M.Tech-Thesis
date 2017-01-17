@@ -1,111 +1,132 @@
 package durgesh.tool.MTech_thesis;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.Vector;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class ArticleProcessor {
+	private static MaxentTagger tagger;
 
-/*	private static String spellProcessor(String article) {
-		String correctArticle = null;
+	private static String add(String src, String tgt) {
+		if (src.length() == 0)
+			src = tgt;
+		else
+			src += " " + tgt;
+		return src;
+	}
+
+	@SuppressWarnings("resource")
+	private static String spellProcessor(String article) {
+		String correctArticle = "";
 		String[] tokens = article.split(" ");
 		int idx = 0;
 		for (String s : tokens) {
-			String res = SpellCorrector.correct(tokens, idx, s);
-			if (correctArticle == null)
-				correctArticle = res;
-			else
-				correctArticle += " " + res;
+			Vector<String> res = SpellCorrector.correct(
+					correctArticle.split(" "), idx, s);
 			idx += 1;
+			System.out.print(s + " = ");
+			Iterator<String> it = res.iterator();
+			while (it.hasNext()) {
+				System.out.print(it.next() + " ");
+			}
+			System.out.print("\nEnter index:: ");
+			Scanner scanner = new Scanner(System.in);
+			int chosen = scanner.nextInt();
+			if (chosen == 0) {
+				correctArticle = add(correctArticle, s);
+			} else {
+				correctArticle = add(correctArticle, res.elementAt(chosen - 1));
+			}
+
 		}
 		return correctArticle;
-	}*/
-
-	@SuppressWarnings("resource")
-	public static String cleanInputArticle(String inpPath) {
-		FileReader input = null;
-		try {
-			input = new FileReader(inpPath);
-		} catch (FileNotFoundException e1) {
-			System.out.println("File not found or Bad path");
-			e1.printStackTrace();
-		}
-		String line = null, cleanArticle = null;
-		try {
-			BufferedReader bufRead = new BufferedReader(input);
-			while ((line = bufRead.readLine()) != null) {
-				String[] tokens = line.split(" ");
-				for (String s : tokens) {
-					String res = s.toString().replaceAll("[^a-zA-Z0-9]", "")
-							.toLowerCase();
-					if (cleanArticle == null)
-						cleanArticle = res;
-					else
-						cleanArticle += " " + res;
-				}
-			}
-		} catch (IOException e) {
-			System.out.println("line not found");
-			e.printStackTrace();
-		}
-		return cleanArticle;
-
 	}
 
-	public static final String spinProcessor(String article) {
-		String taggerPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/models/english-left3words-distsim.tagger";
-		MaxentTagger tagger = new MaxentTagger(taggerPath);
-		posTagger.selectPOS();
+	public static String cleanInputArticle(String inputArticle) {
+		String cleanArticle = "";
+		String[] tokens = inputArticle.split(" ");
+		for (String s : tokens) {
+			String res = s.toString().replaceAll("[^a-zA-Z0-9']", "")
+					.toLowerCase();
+			cleanArticle = add(cleanArticle, res);
+		}
+		return cleanArticle;
+	}
 
+	@SuppressWarnings("resource")
+	public static final String spinProcessor(String article) {
 		String resArticle = "";
 		String[] tokens = article.split(" ");
 		int idx = 0;
 		for (String token : tokens) {
 			if (posTagger.isCandidatePOS(tagger, token)) {
-				String res = Spinner.SpinWord(tokens, idx, token);
-				if (resArticle.isEmpty())
-					resArticle = res;
-				else
-					resArticle += " " + res;
+				Vector<String> res = Spinner.SpinWord(
+						resArticle.split(" "), idx, token);
 				idx += 1;
-			} else {
-				if (resArticle.isEmpty())
-					resArticle = token;
-				else
-					resArticle += " " + token;
-			}
+				System.out.print(token + " = ");
+				Iterator<String> it = res.iterator();
+				while (it.hasNext()) {
+					System.out.print(it.next() + " ");
+				}
+				System.out.print("\nEnter index:: ");
+				Scanner scanner = new Scanner(System.in);
+				int chosen = scanner.nextInt();
+				if (chosen == 0) {
+					resArticle = add(resArticle, token);
+				} else {
+					resArticle = add(resArticle, res.elementAt(chosen - 1));
+				}
+			} else
+				resArticle = add(resArticle, token);
 		}
 		return resArticle;
 	}
 
 	public static final void init() {
 		String synPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/cleanSynonyms.txt";
+		String dicPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/Dictionary.txt";
 		String uniGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n1_.txt";
 		String biGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n2_.txt";
 		String triGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n3_.txt";
 		String fourGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n4_.txt";
 		String fiveGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n5_.txt";
-
+		String taggerPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/models/english-left3words-distsim.tagger";
+		tagger = new MaxentTagger(taggerPath);
+		posTagger.selectPOS();
 		ProcessDataSet.Unigram(uniGramPath);
 		ProcessDataSet.Bigram(biGramPath);
 		ProcessDataSet.Trigram(triGramPath);
 		ProcessDataSet.Fourgram(fourGramPath);
 		ProcessDataSet.Fivegram(fiveGramPath);
 		ProcessDataSet.Synonyms(synPath);
+		ProcessDataSet.DicWords(dicPath);
 		ProcessDataSet.NgramCoefficient();
 	}
 
-/*	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		init();
-		String inpPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/article.txt";
-		String correctArticle = spellProcessor(cleanInputArticle(inpPath));
-		System.out.println(correctArticle);
-
-		String finalArticle = spinProcessor(correctArticle);
-		System.out.println(finalArticle);
-		System.out.println("Process Done !!!");
-	}*/
+		System.out.println("Enter Number of Test Cases :: ");
+		BufferedReader bufReader = new BufferedReader(new InputStreamReader(
+				System.in));
+		int test;
+		test = Integer.parseInt(bufReader.readLine());
+		for (int i = 1; i <= test; i++) {
+			String inputArticle = bufReader.readLine();
+			System.out.println("-----------------Spelling Correction---------------");
+			String correctArticle = spellProcessor(cleanInputArticle(inputArticle));
+			System.out.println("\nCorrected Article is:\n" + correctArticle
+					+ "\n");
+			System.out.println("-----------------Word Spinning---------------");
+			String finalArticle = spinProcessor(correctArticle);
+			System.out.println("\nFinal Output is:\n" + finalArticle);
+			System.out.println("-----------------End---------------\n\n");
+		}
+		bufReader.close();
+		System.out.println("\nProcess Done !!!");
+	}
 }

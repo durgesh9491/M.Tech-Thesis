@@ -13,11 +13,12 @@ public class ProcessDataSet {
 	public final static HashMap<String, Integer> triGram = new HashMap<String, Integer>();
 	public final static HashMap<String, Integer> fourGram = new HashMap<String, Integer>();
 	public final static HashMap<String, Integer> fiveGram = new HashMap<String, Integer>();
+	public final static HashMap<String, Boolean> dicWords = new HashMap<String, Boolean>();
 	public final static HashMap<String, Vector<String>> synonyms = new HashMap<String, Vector<String>>();
 	public static int totalwords;
 	public final static int NgramsLimit = 5;
-	public final static double[] ngramCoefficient = new double[NgramsLimit +1];
-    
+	public final static double[] ngramCoefficient = new double[NgramsLimit + 1];
+
 	public static void NgramCoefficient() {
 		double select = 0, mx = 0;
 		for (double i = 0; i < 1; i += 0.000001) {
@@ -143,6 +144,21 @@ public class ProcessDataSet {
 				synList.add(tokens[i]);
 			}
 			synonyms.put(tokens[0], synList);
+		}
+		scanner.close();
+	}
+
+	public static void DicWords(String file) {
+		Scanner scanner = null;
+		try {
+			scanner = new Scanner(new FileInputStream(file), "UTF-8");
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found or Bad Path");
+			e.printStackTrace();
+		}
+		while (scanner.hasNextLine()) {
+			String line = scanner.nextLine();
+			dicWords.put(line, true);
 		}
 		scanner.close();
 	}
