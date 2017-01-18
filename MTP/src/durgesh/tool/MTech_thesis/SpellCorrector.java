@@ -4,74 +4,80 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.TreeMap;
 import java.util.Vector;
-
-import edu.stanford.nlp.util.Pair;
 
 class SpellCorrector extends NgramScore {
 
+	private static TreeMap<Double, String> treeMap = new TreeMap<Double, String>(
+			Collections.reverseOrder());
+	private static HashMap<String, Boolean> makeUnique = new HashMap<String, Boolean>();
+	private static Vector<String> correctedWords = new Vector<String>();
+	private static HashMap<Integer, String> candidates_1 = new HashMap<Integer, String>();
+	private static HashMap<Integer, String> candidates_2 = new HashMap<Integer, String>();
+	private static ArrayList<String> wordEdits = new ArrayList<String>();
+
 	private static final ArrayList<String> edits(String word) {
-		ArrayList<String> result = new ArrayList<String>();
+		wordEdits.clear();
 		for (int i = 0; i < word.length(); ++i)
-			result.add(word.substring(0, i) + word.substring(i + 1));
+			wordEdits.add(word.substring(0, i) + word.substring(i + 1));
 		for (int i = 0; i < word.length() - 1; ++i)
-			result.add(word.substring(0, i) + word.substring(i + 1, i + 2)
+			wordEdits.add(word.substring(0, i) + word.substring(i + 1, i + 2)
 					+ word.substring(i, i + 1) + word.substring(i + 2));
 		for (int i = 0; i < word.length(); ++i)
 			for (char c = 'a'; c <= 'z'; ++c)
-				result.add(word.substring(0, i) + String.valueOf(c)
+				wordEdits.add(word.substring(0, i) + String.valueOf(c)
 						+ word.substring(i + 1));
 		for (int i = 0; i <= word.length(); ++i)
 			for (char c = 'a'; c <= 'z'; ++c)
-				result.add(word.substring(0, i) + String.valueOf(c)
+				wordEdits.add(word.substring(0, i) + String.valueOf(c)
 						+ word.substring(i));
-		return result;
+		return wordEdits;
 	}
 
-	private static final HashMap<Integer, String> findCandidates(String word,
+	private static final HashMap<Integer, String> findCandidates(
 			ArrayList<String> list) {
-		HashMap<Integer, String> candidates = new HashMap<Integer, String>();
+		candidates_1.clear();
 		for (String s : list) {
 			if (ProcessDataSet.dicWords.containsKey(s)) {
 				if (ProcessDataSet.uniGram.containsKey(s)) {
-					candidates.put(ProcessDataSet.uniGram.get(s), s);
+					candidates_1.put(ProcessDataSet.uniGram.get(s), s);
 				}
 			}
 		}
-		return candidates;
+		return candidates_1;
 	}
 
 	public static final HashMap<Integer, String> findNextCandidates(
 			ArrayList<String> list) {
-		HashMap<Integer, String> candidates = new HashMap<Integer, String>();
+		candidates_2.clear();
 		for (String s : list) {
 			for (String w : edits(s)) {
-				if (ProcessDataSet.dicWords.containsKey(s)) {
+				if (ProcessDataSet.dicWords.containsKey(w)) {
 					if (ProcessDataSet.uniGram.containsKey(w)) {
-						candidates.put(ProcessDataSet.uniGram.get(w), w);
+						candidates_2.put(ProcessDataSet.uniGram.get(w), w);
 					}
 				}
 			}
 		}
-		return candidates;
+		return candidates_2;
 	}
 
 	public static final Vector<String> correct(String[] tokens, int idx,
 			String target) {
-		Vector<String> correctedWord = new Vector<String>();
+		correctedWords.clear();
+		treeMap.clear();
+		makeUnique.clear();
+		System.out.println();
+		ArrayList<String> list = new ArrayList<String>(edits(target));
+		HashMap<Integer, String> candidates = findCandidates(list);
 
-		ArrayList<String> list = edits(target);
-		HashMap<Integer, String> candidates = findCandidates(target, list);
-		HashMap<String, Boolean> check = new HashMap<String, Boolean>();
 		if (ProcessDataSet.dicWords.containsKey(target)) {
-			check.put(target, true);
+			makeUnique.put(target, true);
 		}
 		/*
 		 * for candidate words at edit distance 1
 		 */
-		PriorityQueue<Pair<Double, String>> queue = new PriorityQueue<Pair<Double, String>>(
-				Collections.reverseOrder());
 		for (Map.Entry<Integer, String> itr : candidates.entrySet()) {
 			double val = ProcessDataSet.ngramCoefficient[1]
 					* unigramScore(tokens, idx, itr.getValue())
@@ -83,22 +89,23 @@ class SpellCorrector extends NgramScore {
 					* fourgramScore(tokens, idx, itr.getValue())
 					+ ProcessDataSet.ngramCoefficient[5]
 					* fivegramScore(tokens, idx, itr.getValue());
-			queue.add(new Pair<Double, String>(val, itr.getValue()));
+			treeMap.put(val, itr.getValue());
 		}
 		int i = 1;
-		for (Pair<Double, String> entry : queue) {
-			Object obj = check.get(entry.second());
+		for (Map.Entry<Double, String> entry : treeMap.entrySet()) {
+			Object obj = makeUnique.get(entry.getValue());
 			if (obj != null)
 				continue;
-			correctedWord.add(entry.second());
-			check.put(entry.second(), true);
+			correctedWords.add(entry.getValue());
+			// System.out.println(entry.getValue() + " = " + entry.getKey());
+			makeUnique.put(entry.getValue(), true);
 			if (++i > 5)
 				break;
 		}
 		/*
 		 * for candidate words at edit distance 2
 		 */
-		queue.clear();
+		treeMap.clear();
 		candidates = SpellCorrector.findNextCandidates(list);
 		for (Map.Entry<Integer, String> itr : candidates.entrySet()) {
 			double val = ProcessDataSet.ngramCoefficient[1]
@@ -111,17 +118,19 @@ class SpellCorrector extends NgramScore {
 					* fourgramScore(tokens, idx, itr.getValue())
 					+ ProcessDataSet.ngramCoefficient[5]
 					* fivegramScore(tokens, idx, itr.getValue());
-			queue.add(new Pair<Double, String>(val, itr.getValue()));
+			treeMap.put(val, itr.getValue());
 		}
-		for (Pair<Double, String> entry : queue) {
-			Object obj = check.get(entry.second());
+
+		for (Map.Entry<Double, String> entry : treeMap.entrySet()) {
+			Object obj = makeUnique.get(entry.getValue());
 			if (obj != null)
 				continue;
-			correctedWord.add(entry.second());
-			check.put(entry.second(), true);
+			correctedWords.add(entry.getValue());
+			// System.out.println(entry.getValue() + " = " + entry.getKey());
+			makeUnique.put(entry.getValue(), true);
 			if (++i > 10)
 				break;
 		}
-		return correctedWord;
+		return correctedWords;
 	}
 }

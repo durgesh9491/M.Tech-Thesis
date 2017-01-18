@@ -4,9 +4,9 @@ import java.util.HashMap;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 public class posTagger {
-	private final static HashMap<String, Boolean> pos = new HashMap<String, Boolean>();
+	private static final HashMap<String, Boolean> pos = new HashMap<String, Boolean>();
 
-	public static void selectPOS() {
+	public static final void selectPOS() {
 		/*
 		 * JJ : adjective, RB : adverb, VB : verb
 		 */
@@ -20,12 +20,13 @@ public class posTagger {
 		pos.put("VBG", true);
 		pos.put("VBN", true);
 		pos.put("VBP", true);
-		/*
-		 * pos.put("RB", true); pos.put("VBZ", true);
-		 */
+		// pos.put("RB", true);
+		// pos.put("VBZ", true);
+
 	}
 
-	public static Boolean isCandidatePOS(MaxentTagger tagger, String target) {
+	public static final Boolean isCandidatePOS(MaxentTagger tagger,
+			String target) {
 		String tagged = tagger.tagString(target);
 		String posVal = tagged.substring(tagged.indexOf("_") + 1,
 				tagged.length() - 1);

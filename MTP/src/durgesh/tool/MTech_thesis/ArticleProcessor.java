@@ -12,7 +12,7 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 public class ArticleProcessor {
 	private static MaxentTagger tagger;
 
-	private static String add(String src, String tgt) {
+	private static final String add(String src, String tgt) {
 		if (src.length() == 0)
 			src = tgt;
 		else
@@ -21,7 +21,7 @@ public class ArticleProcessor {
 	}
 
 	@SuppressWarnings("resource")
-	private static String spellProcessor(String article) {
+	private static final String spellProcessor(String article) {
 		String correctArticle = "";
 		String[] tokens = article.split(" ");
 		int idx = 0;
@@ -29,6 +29,10 @@ public class ArticleProcessor {
 			Vector<String> res = SpellCorrector.correct(
 					correctArticle.split(" "), idx, s);
 			idx += 1;
+			if (res.size() == 0) {
+				correctArticle = add(correctArticle, s);
+				continue;
+			}
 			System.out.print(s + " = ");
 			Iterator<String> it = res.iterator();
 			while (it.hasNext()) {
@@ -47,7 +51,7 @@ public class ArticleProcessor {
 		return correctArticle;
 	}
 
-	public static String cleanInputArticle(String inputArticle) {
+	private static final String cleanInputArticle(String inputArticle) {
 		String cleanArticle = "";
 		String[] tokens = inputArticle.split(" ");
 		for (String s : tokens) {
@@ -59,15 +63,19 @@ public class ArticleProcessor {
 	}
 
 	@SuppressWarnings("resource")
-	public static final String spinProcessor(String article) {
+	private static final String spinProcessor(String article) {
 		String resArticle = "";
 		String[] tokens = article.split(" ");
 		int idx = 0;
 		for (String token : tokens) {
 			if (posTagger.isCandidatePOS(tagger, token)) {
-				Vector<String> res = Spinner.SpinWord(
-						resArticle.split(" "), idx, token);
+				Vector<String> res = Spinner.SpinWord(resArticle.split(" "),
+						idx, token);
 				idx += 1;
+				if (res.size() == 0) {
+					resArticle = add(resArticle, token);
+					continue;
+				}
 				System.out.print(token + " = ");
 				Iterator<String> it = res.iterator();
 				while (it.hasNext()) {
@@ -113,11 +121,12 @@ public class ArticleProcessor {
 		System.out.println("Enter Number of Test Cases :: ");
 		BufferedReader bufReader = new BufferedReader(new InputStreamReader(
 				System.in));
-		int test;
+		int test = 0;
 		test = Integer.parseInt(bufReader.readLine());
 		for (int i = 1; i <= test; i++) {
 			String inputArticle = bufReader.readLine();
-			System.out.println("-----------------Spelling Correction---------------");
+			System.out
+					.println("-----------------Spelling Correction---------------");
 			String correctArticle = spellProcessor(cleanInputArticle(inputArticle));
 			System.out.println("\nCorrected Article is:\n" + correctArticle
 					+ "\n");

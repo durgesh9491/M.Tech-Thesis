@@ -15,8 +15,9 @@ public class ProcessDataSet {
 	public final static HashMap<String, Integer> fiveGram = new HashMap<String, Integer>();
 	public final static HashMap<String, Boolean> dicWords = new HashMap<String, Boolean>();
 	public final static HashMap<String, Vector<String>> synonyms = new HashMap<String, Vector<String>>();
-	public static int totalwords;
-	public final static int NgramsLimit = 5;
+	private static int totalwords;
+	private final static int NgramsLimit = 5;
+	private static final int scale = 100000000;
 	public final static double[] ngramCoefficient = new double[NgramsLimit + 1];
 
 	public static void NgramCoefficient() {
@@ -32,7 +33,7 @@ public class ProcessDataSet {
 			}
 		}
 		for (int i = 1; i <= NgramsLimit; i++) {
-			ngramCoefficient[i] = Math.pow(select, NgramsLimit - i + 1);
+			ngramCoefficient[i] = scale * Math.pow(select, NgramsLimit - i + 1);
 		}
 	}
 
