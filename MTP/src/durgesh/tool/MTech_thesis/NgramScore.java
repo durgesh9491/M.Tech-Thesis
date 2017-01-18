@@ -1,5 +1,12 @@
 package durgesh.tool.MTech_thesis;
 
+/**
+ * @author This module finds out the score of a word based on the words which
+ *         follows it. Uses a probabilistic model to find out N-gram score i.e.,
+ *         P(x = N | N-1, N-2, N-3, ...) = count(N, N-1, N-2, N-3...)/count(N-1,
+ *         N-2, N-3...). This module has implementation up to 5-grams, so N = 5.
+ *
+ */
 public abstract class NgramScore {
 
 	public static final double unigramScore(String[] tokens, int idx,

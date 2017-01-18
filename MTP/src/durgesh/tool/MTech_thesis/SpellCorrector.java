@@ -7,8 +7,12 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.Vector;
 
-class SpellCorrector extends NgramScore {
+/**
+ * @author Module Implementing spell corrector based on weighted N-gram score of
+ *         the words.
+ */
 
+class SpellCorrector extends NgramScore {
 	private static TreeMap<Double, String> treeMap = new TreeMap<Double, String>(
 			Collections.reverseOrder());
 	private static HashMap<String, Boolean> makeUnique = new HashMap<String, Boolean>();
@@ -65,9 +69,23 @@ class SpellCorrector extends NgramScore {
 
 	public static final Vector<String> correct(String[] tokens, int idx,
 			String target) {
+
+		/**
+		 * @param tokens
+		 *            contains the past history of the ongoing sentence
+		 * @param idx
+		 *            current index of the word
+		 * @param target
+		 *            word under consideration
+		 * @return list of candidate words eligible for spelling correction
+		 */
+
 		correctedWords.clear();
 		treeMap.clear();
 		makeUnique.clear();
+		for (String s : tokens) {
+			System.out.print(s + " ");
+		}
 		System.out.println();
 		ArrayList<String> list = new ArrayList<String>(edits(target));
 		HashMap<Integer, String> candidates = findCandidates(list);
@@ -97,7 +115,6 @@ class SpellCorrector extends NgramScore {
 			if (obj != null)
 				continue;
 			correctedWords.add(entry.getValue());
-			// System.out.println(entry.getValue() + " = " + entry.getKey());
 			makeUnique.put(entry.getValue(), true);
 			if (++i > 5)
 				break;
@@ -126,7 +143,6 @@ class SpellCorrector extends NgramScore {
 			if (obj != null)
 				continue;
 			correctedWords.add(entry.getValue());
-			// System.out.println(entry.getValue() + " = " + entry.getKey());
 			makeUnique.put(entry.getValue(), true);
 			if (++i > 10)
 				break;

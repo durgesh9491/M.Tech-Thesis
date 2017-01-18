@@ -7,6 +7,12 @@ import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.Scanner;
 
+/**
+ * @author Dataset preprocessing module, later all the data structures will be
+ *         used for faster dictionary based lookups. Also implements the method
+ *         calculating weight coefficient(lambda) of N-gram for a word 'x'.
+ */
+
 public class ProcessDataSet {
 	public final static HashMap<String, Integer> uniGram = new HashMap<String, Integer>();
 	public final static HashMap<String, Integer> biGram = new HashMap<String, Integer>();

@@ -9,6 +9,12 @@ import java.util.Vector;
 
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
+/**
+ * @author Article Processor is the main file having results from all the other
+ *         modules Implementing: Data-set processor, Article cleaning using
+ *         regex, Spell processor, and Word spinner.
+ *
+ */
 public class ArticleProcessor {
 	private static MaxentTagger tagger;
 
