@@ -22,11 +22,13 @@ public class Spinner extends NgramScore {
 	 *            current index of the word
 	 * @param target
 	 *            word under consideration
+	 * @see Gives suggestion of best words(up to 10) for word spinning
 	 * @return list of candidate words eligible for replacement
 	 */
 	public static final Vector<String> SpinWord(String[] tokens, int idx,
 			String target) {
 		result.clear();
+
 		for (String s : tokens) {
 			System.out.print(s + " ");
 		}

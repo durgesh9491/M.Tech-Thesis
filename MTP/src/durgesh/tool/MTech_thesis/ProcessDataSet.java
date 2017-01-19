@@ -38,6 +38,10 @@ public class ProcessDataSet {
 				mx = res;
 			}
 		}
+		/*
+		 * scaling is done for better comparison of results(to avoid precision
+		 * errors)
+		 */
 		for (int i = 1; i <= NgramsLimit; i++) {
 			ngramCoefficient[i] = scale * Math.pow(select, NgramsLimit - i + 1);
 		}

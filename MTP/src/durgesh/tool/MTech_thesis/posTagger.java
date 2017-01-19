@@ -4,9 +4,9 @@ import java.util.HashMap;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 /**
- * @author A Part-Of-Speech Tagger (POS Tagger) is a piece of code that
- *         reads text in some language and assigns parts of speech to each word
- *         (and other token), such as noun, verb, adjective, etc.
+ * @author A Part-Of-Speech Tagger (POS Tagger) is a piece of code that reads
+ *         text in some language and assigns parts of speech to each word (and
+ *         other token), such as noun, verb, adjective, etc.
  *
  */
 public class posTagger {
@@ -28,6 +28,7 @@ public class posTagger {
 		pos.put("VBP", true);
 		pos.put("RB", true);
 		pos.put("VBZ", true);
+		pos.put("NN", true);
 
 	}
 

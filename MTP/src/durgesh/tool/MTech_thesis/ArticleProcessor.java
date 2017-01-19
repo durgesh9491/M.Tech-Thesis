@@ -10,9 +10,9 @@ import java.util.Vector;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 /**
- * @author Article Processor is the main file having results from all the other
- *         modules Implementing: Data-set processor, Article cleaning using
- *         regex, Spell processor, and Word spinner.
+ * @author Article Processor is the main module having results from all the
+ *         other modules Implementing: Data-set processor, Article cleaning
+ *         using regex, Spell processor, and Word spinner.
  *
  */
 public class ArticleProcessor {
@@ -26,6 +26,11 @@ public class ArticleProcessor {
 		return src;
 	}
 
+	/**
+	 * @spellProcessor: Processes each token(word) of the clean article and
+	 *                  performs spell correction based on the priorities of the
+	 *                  words. i.e., res vector<String>.
+	 */
 	@SuppressWarnings("resource")
 	private static final String spellProcessor(String article) {
 		String correctArticle = "";
@@ -57,6 +62,10 @@ public class ArticleProcessor {
 		return correctArticle;
 	}
 
+	/**
+	 * @param inputArticle
+	 * @return article with no special characters except (a-zA-Z0-9')
+	 */
 	private static final String cleanInputArticle(String inputArticle) {
 		String cleanArticle = "";
 		String[] tokens = inputArticle.split(" ");
@@ -68,6 +77,13 @@ public class ArticleProcessor {
 		return cleanArticle;
 	}
 
+	/**
+	 * @param target
+	 * @spinProcessor: Processes each token(word) of the corretedArticle and
+	 *                 performs word spinning based on the priorities of the
+	 *                 words(synonyms). i.e., res vector<String>.
+	 * @return final article after performing spinning
+	 */
 	@SuppressWarnings("resource")
 	private static final String spinProcessor(String article) {
 		String resArticle = "";
@@ -101,6 +117,10 @@ public class ArticleProcessor {
 		return resArticle;
 	}
 
+	/**
+	 * This function performs pre-processing and prepares dictionary and data
+	 * set for lookups
+	 */
 	public static final void init() {
 		String synPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/cleanSynonyms.txt";
 		String dicPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/Dictionary.txt";
@@ -124,6 +144,8 @@ public class ArticleProcessor {
 
 	public static void main(String[] args) throws IOException {
 		init();
+		System.out
+				.println("Note: Enter 0 to select current word, otherwise enter sequence number of a word from listed words");
 		System.out.println("Enter Number of Test Cases :: ");
 		BufferedReader bufReader = new BufferedReader(new InputStreamReader(
 				System.in));
