@@ -14,9 +14,11 @@ public abstract class NgramScore {
 		Object obj = ProcessDataSet.uniGram.get(target);
 		double res = 0.0;
 		if (obj != null) {
+			double k = ProcessDataSet.smoothingConst;
+			double V = ProcessDataSet.uniGram.size();
 			double num = (Integer) obj;
 			double den = ProcessDataSet.getTotalwords();
-			res = num / den;
+			res = (num + k)/ (den + k*V);
 		}
 		return res;
 	}
@@ -29,9 +31,11 @@ public abstract class NgramScore {
 		Object Obj2 = ProcessDataSet.biGram.get(tokens[idx - 1] + " " + target);
 		double res = 0.0;
 		if (Obj1 != null && Obj2 != null) {
+			double k = ProcessDataSet.smoothingConst;
+			double V = ProcessDataSet.uniGram.size();
 			double den = (Integer) Obj1;
 			double num = (Integer) Obj2;
-			res = num / den;
+			res = (num + k)/ (den + k*V);
 		}
 		return res;
 	}
@@ -46,9 +50,11 @@ public abstract class NgramScore {
 				+ tokens[idx - 1] + " " + target);
 		double res = 0.0;
 		if (Obj1 != null && Obj2 != null) {
+			double k = ProcessDataSet.smoothingConst;
+			double V = ProcessDataSet.biGram.size();
 			double den = (Integer) Obj1;
 			double num = (Integer) Obj2;
-			res = num / den;
+			res = (num + k)/ (den + k*V);
 		}
 		return res;
 	}
@@ -63,9 +69,11 @@ public abstract class NgramScore {
 				+ tokens[idx - 2] + " " + tokens[idx - 1] + " " + target);
 		double res = 0.0;
 		if (Obj1 != null && Obj2 != null) {
+			double k = ProcessDataSet.smoothingConst;
+			double V = ProcessDataSet.triGram.size();
 			double den = (Integer) Obj1;
 			double num = (Integer) Obj2;
-			res = num / den;
+			res = (num + k)/ (den + k*V);
 		}
 		return res;
 	}
@@ -82,9 +90,11 @@ public abstract class NgramScore {
 				+ tokens[idx - 1] + " " + target);
 		double res = 0.0;
 		if (Obj1 != null && Obj2 != null) {
+			double k = ProcessDataSet.smoothingConst;
+			double V = ProcessDataSet.fourGram.size();
 			double den = (Integer) Obj1;
 			double num = (Integer) Obj2;
-			res = num / den;
+			res = (num + k)/ (den + k*V);
 		}
 		return res;
 	}

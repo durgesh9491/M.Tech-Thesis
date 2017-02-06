@@ -2,8 +2,8 @@ package durgesh.tool.MTech_thesis;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.Vector;
 
@@ -15,11 +15,12 @@ import java.util.Vector;
 class SpellCorrector extends NgramScore {
 	private static TreeMap<Double, String> treeMap = new TreeMap<Double, String>(
 			Collections.reverseOrder());
-	private static HashMap<String, Boolean> makeUnique = new HashMap<String, Boolean>();
+	private static TreeMap<String, Boolean> makeUnique = new TreeMap<String, Boolean>();
 	private static Vector<String> correctedWords = new Vector<String>();
-	private static HashMap<Integer, String> candidates_1 = new HashMap<Integer, String>();
-	private static HashMap<Integer, String> candidates_2 = new HashMap<Integer, String>();
+	private static TreeMap<Integer, String> candidates_1 = new TreeMap<Integer, String>();
+	private static TreeMap<Integer, String> candidates_2 = new TreeMap<Integer, String>();
 	private static ArrayList<String> wordEdits = new ArrayList<String>();
+	private static HashMap<String, Boolean> hashMap = new HashMap<String, Boolean>();
 
 	private static final ArrayList<String> edits(String word) {
 		wordEdits.clear();
@@ -39,7 +40,7 @@ class SpellCorrector extends NgramScore {
 		return wordEdits;
 	}
 
-	private static final HashMap<Integer, String> findCandidates(
+	private static final TreeMap<Integer, String> findCandidates(
 			ArrayList<String> list) {
 		candidates_1.clear();
 		for (String s : list) {
@@ -52,7 +53,7 @@ class SpellCorrector extends NgramScore {
 		return candidates_1;
 	}
 
-	public static final HashMap<Integer, String> findNextCandidates(
+	public static final TreeMap<Integer, String> findNextCandidates(
 			ArrayList<String> list) {
 		candidates_2.clear();
 		for (String s : list) {
@@ -65,6 +66,49 @@ class SpellCorrector extends NgramScore {
 			}
 		}
 		return candidates_2;
+	}
+
+	private static final Vector<String> findCandidates1(ArrayList<String> list) {
+		int cnt = 0;
+		Vector<String> res = new Vector<String>();
+		for (String s : list) {
+			if (ProcessDataSet.dicWords.containsKey(s)) {
+				if (ProcessDataSet.uniGram.containsKey(s)) {
+					if (hashMap.containsKey(s) == false) {
+						hashMap.put(s, true);
+						++cnt;
+						res.add(s);
+						if (cnt >= 5)
+							break;
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	public static final Vector<String> findNextCandidates1(
+			ArrayList<String> list) {
+		int cnt = 0;
+		Vector<String> res = new Vector<String>();
+		for (String s : list) {
+			if (cnt >= 5)
+				break;
+			for (String w : edits(s)) {
+				if (ProcessDataSet.dicWords.containsKey(w)) {
+					if (ProcessDataSet.uniGram.containsKey(w)) {
+						if (hashMap.containsKey(w) == false) {
+							hashMap.put(w, true);
+							++cnt;
+							res.add(w);
+							if (cnt >= 5)
+								break;
+						}
+					}
+				}
+			}
+		}
+		return res;
 	}
 
 	public static final Vector<String> correct(String[] tokens, int idx,
@@ -83,12 +127,8 @@ class SpellCorrector extends NgramScore {
 		correctedWords.clear();
 		treeMap.clear();
 		makeUnique.clear();
-		for (String s : tokens) {
-			System.out.print(s + " ");
-		}
-		System.out.println();
 		ArrayList<String> list = new ArrayList<String>(edits(target));
-		HashMap<Integer, String> candidates = findCandidates(list);
+		TreeMap<Integer, String> candidates = findCandidates(list);
 
 		if (ProcessDataSet.dicWords.containsKey(target)) {
 			makeUnique.put(target, true);
@@ -148,5 +188,24 @@ class SpellCorrector extends NgramScore {
 				break;
 		}
 		return correctedWords;
+	}
+
+	public static final Vector<String> correct1(String[] tokens, int idx,
+			String target) {
+
+		/**
+		 * @param tokens
+		 *            contains the past history of the ongoing sentence
+		 * @param idx
+		 *            current index of the word
+		 * @param target
+		 *            word under consideration
+		 * @return list of candidate words eligible for spelling correction
+		 */
+		hashMap.clear();
+		ArrayList<String> list = new ArrayList<String>(edits(target));
+		Vector<String> candidates = new Vector<String>(findCandidates1(list));
+		candidates.addAll(findNextCandidates1(list));
+		return candidates;
 	}
 }

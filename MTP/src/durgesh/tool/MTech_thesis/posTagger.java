@@ -1,6 +1,7 @@
 package durgesh.tool.MTech_thesis;
 
-import java.util.HashMap;
+import java.util.TreeMap;
+
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 /**
@@ -10,7 +11,7 @@ import edu.stanford.nlp.tagger.maxent.MaxentTagger;
  *
  */
 public class posTagger {
-	private static final HashMap<String, Boolean> pos = new HashMap<String, Boolean>();
+	private static final TreeMap<String, Boolean> pos = new TreeMap<String, Boolean>();
 
 	public static final void selectPOS() {
 		/*

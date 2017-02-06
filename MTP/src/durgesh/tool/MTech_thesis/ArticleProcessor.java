@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Vector;
 
+import durgesh.too.output.analysis.ResultAnalysis;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 /**
@@ -60,6 +61,33 @@ public class ArticleProcessor {
 
 		}
 		return correctArticle;
+	}
+
+	public static final void spellProcessor2(String article, String orgString) {
+		String[] tokens = article.split(" ");
+		String[] orgTokens = orgString.split(" ");
+		int idx = 0;
+		for (String s : tokens) {
+			Vector<String> res = new Vector<String>(SpellCorrector.correct1(
+					orgTokens, idx, s));
+			boolean flag = false;
+			for (int i = 0; i < res.size(); i++) {
+				if (res.elementAt(i).equals(orgTokens[idx])) {
+					flag = true;
+					ResultAnalysis.myHit++;
+					break;
+				}
+			}
+			if (!flag)
+				ResultAnalysis.myMiss++;
+			System.out.println(idx);
+			/*
+			 * System.out.print(s + " = "); Iterator<String> it =
+			 * res.iterator(); while (it.hasNext()) { System.out.print(it.next()
+			 * + " "); }
+			 */
+			idx += 1;
+		}
 	}
 
 	/**
@@ -155,6 +183,7 @@ public class ArticleProcessor {
 			String inputArticle = bufReader.readLine();
 			System.out
 					.println("-----------------Spelling Correction---------------");
+			System.out.println(cleanInputArticle(inputArticle));
 			String correctArticle = spellProcessor(cleanInputArticle(inputArticle));
 			System.out.println("\nCorrected Article is:\n" + correctArticle
 					+ "\n");
