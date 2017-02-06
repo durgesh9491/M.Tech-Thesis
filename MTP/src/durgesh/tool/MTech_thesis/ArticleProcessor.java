@@ -68,7 +68,7 @@ public class ArticleProcessor {
 		String[] orgTokens = orgString.split(" ");
 		int idx = 0;
 		for (String s : tokens) {
-			Vector<String> res = new Vector<String>(SpellCorrector.correct1(
+			Vector<String> res = new Vector<String>(SpellCorrector.correct(
 					orgTokens, idx, s));
 			boolean flag = false;
 			for (int i = 0; i < res.size(); i++) {
@@ -81,11 +81,13 @@ public class ArticleProcessor {
 			if (!flag)
 				ResultAnalysis.myMiss++;
 			System.out.println(idx);
+
 			/*
 			 * System.out.print(s + " = "); Iterator<String> it =
 			 * res.iterator(); while (it.hasNext()) { System.out.print(it.next()
 			 * + " "); }
 			 */
+
 			idx += 1;
 		}
 	}

@@ -156,7 +156,7 @@ class SpellCorrector extends NgramScore {
 				continue;
 			correctedWords.add(entry.getValue());
 			makeUnique.put(entry.getValue(), true);
-			if (++i > 5)
+			if (++i > 2)
 				break;
 		}
 		/*
@@ -184,7 +184,7 @@ class SpellCorrector extends NgramScore {
 				continue;
 			correctedWords.add(entry.getValue());
 			makeUnique.put(entry.getValue(), true);
-			if (++i > 10)
+			if (++i > 3)
 				break;
 		}
 		return correctedWords;
