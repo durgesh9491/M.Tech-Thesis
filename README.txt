@@ -1,12 +1,9 @@
 # M.Tech_thesis
 Content Development in users writing style using Article Translator, Spell Corrector and Spinner.
 
-Research related to Natural Language Processing and development of a basic software toolkit encapsulated by article translator, spelling corrector and word spinner modules, providing an interface to convert an article into desired writing style. Where, word spinning is a procedure of replacing a candidate word with their appropriate synonym.
+Research Area | Natural Language Processing.
+Work | Spelling correction, word spinning (synonym replacement) and Article translation.
+Keywords | Edit distance, weighted N-gram model, smoothing, part-of-speech tagging, datasets.
+Supervisor | Dr. Joydip Dhar (Applied Mathematics), IIITM Gwalior.
 
-Implementation:
-Interpolation based probability model (weighted N-gram model) is used as abstract which is inherited by spelling corrector and word spinner modules.
-Accuracy measurement using sentiment analysis and meaning of the sentence.
-Article Translation using Google translation API 
-
-Tools used: Java, Apache OpenNLP, Python NLTK, Eclipse(IDE).
-
+Technologies | Java | Apache OpenNLP | Python NLTK | Google translation API | Eclipse(IDE) | Latex.
