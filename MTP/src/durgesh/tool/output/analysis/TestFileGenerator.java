@@ -1,4 +1,4 @@
-package durgesh.too.output.analysis;
+package durgesh.tool.output.analysis;
 
 import java.io.File;
 import java.io.FileReader;
@@ -10,8 +10,8 @@ import java.util.Random;
 public class TestFileGenerator {
 
 	public static void main(String[] args) throws IOException {
-		String inpPath = "/home/durgesh9491/workspace/MTP/src/durgesh/too/output/analysis/Test.txt";
-		String outPath = "/home/durgesh9491/workspace/MTP/src/durgesh/too/output/analysis/genMisspelTest.txt";
+		String inpPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/output/analysis/Test.txt";
+		String outPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/output/analysis/genMisspelTest.txt";
 		try {
 			File file = new File(inpPath);
 			FileReader fileReader = new FileReader(file);

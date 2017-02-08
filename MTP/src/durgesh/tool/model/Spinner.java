@@ -1,4 +1,4 @@
-package durgesh.tool.MTech_thesis;
+package durgesh.tool.model;
 
 import java.util.Collections;
 import java.util.Map;
@@ -56,7 +56,7 @@ public class Spinner extends NgramScore {
 		int i = 1;
 		for (Map.Entry<Double, String> entry : treeMap.entrySet()) {
 			result.add(entry.getValue());
-			if (++i > 10)
+			if (++i > 5)
 				break;
 		}
 		return result;

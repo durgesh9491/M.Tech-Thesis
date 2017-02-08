@@ -1,8 +1,8 @@
-package durgesh.tool.MTech_thesis;
+package durgesh.tool.model;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -14,17 +14,17 @@ import java.util.Scanner;
  */
 
 public class ProcessDataSet {
-	public final static TreeMap<String, Integer> uniGram = new TreeMap<String, Integer>();
-	public final static TreeMap<String, Integer> biGram = new TreeMap<String, Integer>();
-	public final static TreeMap<String, Integer> triGram = new TreeMap<String, Integer>();
-	public final static TreeMap<String, Integer> fourGram = new TreeMap<String, Integer>();
-	public final static TreeMap<String, Integer> fiveGram = new TreeMap<String, Integer>();
-	public final static TreeMap<String, Boolean> dicWords = new TreeMap<String, Boolean>();
-	public final static TreeMap<String, Vector<String>> synonyms = new TreeMap<String, Vector<String>>();
+	public final static HashMap<String, Integer> uniGram = new HashMap<String, Integer>();
+	public final static HashMap<String, Integer> biGram = new HashMap<String, Integer>();
+	public final static HashMap<String, Integer> triGram = new HashMap<String, Integer>();
+	public final static HashMap<String, Integer> fourGram = new HashMap<String, Integer>();
+	public final static HashMap<String, Integer> fiveGram = new HashMap<String, Integer>();
+	public final static HashMap<String, Boolean> dicWords = new HashMap<String, Boolean>();
+	public final static HashMap<String, Vector<String>> synonyms = new HashMap<String, Vector<String>>();
 	private static int totalwords;
 	private final static int NgramsLimit = 5;
 	private static final int scale = 1000000;
-	public static final int smoothingConst = 100000;
+	public static final int smoothingConst = 7;
 	public final static double[] ngramCoefficient = new double[NgramsLimit + 1];
 
 	public static void NgramCoefficient() {

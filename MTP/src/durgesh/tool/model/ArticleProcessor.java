@@ -1,4 +1,4 @@
-package durgesh.tool.MTech_thesis;
+package durgesh.tool.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Vector;
 
-import durgesh.too.output.analysis.ResultAnalysis;
+import durgesh.tool.output.analysis.ResultAnalysis;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 
 /**
@@ -63,12 +63,12 @@ public class ArticleProcessor {
 		return correctArticle;
 	}
 
-	public static final void spellProcessor2(String article, String orgString) {
+	public static final void testSpellProcessor(String article, String orgString) {
 		String[] tokens = article.split(" ");
 		String[] orgTokens = orgString.split(" ");
 		int idx = 0;
 		for (String s : tokens) {
-			Vector<String> res = new Vector<String>(SpellCorrector.correct(
+			Vector<String> res = new Vector<String>(SpellCorrector.testCorrect(
 					orgTokens, idx, s));
 			boolean flag = false;
 			for (int i = 0; i < res.size(); i++) {
@@ -80,14 +80,6 @@ public class ArticleProcessor {
 			}
 			if (!flag)
 				ResultAnalysis.myMiss++;
-			System.out.println(idx);
-
-			/*
-			 * System.out.print(s + " = "); Iterator<String> it =
-			 * res.iterator(); while (it.hasNext()) { System.out.print(it.next()
-			 * + " "); }
-			 */
-
 			idx += 1;
 		}
 	}
@@ -152,14 +144,14 @@ public class ArticleProcessor {
 	 * set for lookups
 	 */
 	public static final void init() {
-		String synPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/cleanSynonyms.txt";
-		String dicPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/Dictionary.txt";
-		String uniGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n1_.txt";
-		String biGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n2_.txt";
-		String triGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n3_.txt";
-		String fourGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n4_.txt";
-		String fiveGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/n5_.txt";
-		String taggerPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/MTech_thesis/models/english-left3words-distsim.tagger";
+		String synPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/model/cleanSynonyms.txt";
+		String dicPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/model/Dictionary.txt";
+		String uniGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/model/n1_.txt";
+		String biGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/model/n2_.txt";
+		String triGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/model/n3_.txt";
+		String fourGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/model/n4_.txt";
+		String fiveGramPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/model/n5_.txt";
+		String taggerPath = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/POSmodels/english-left3words-distsim.tagger";
 		tagger = new MaxentTagger(taggerPath);
 		posTagger.selectPOS();
 		ProcessDataSet.Unigram(uniGramPath);

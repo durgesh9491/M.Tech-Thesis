@@ -1,18 +1,18 @@
-package durgesh.too.output.analysis;
+package durgesh.tool.output.analysis;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-import durgesh.tool.MTech_thesis.ArticleProcessor;
+import durgesh.tool.model.ArticleProcessor;
 
 public class ResultAnalysis {
 	public static int myHit = 0, myMiss = 0;
 
 	public static void main(String[] args) {
 		ArticleProcessor.init();
-		String inpPath1 = "/home/durgesh9491/workspace/MTP/src/durgesh/too/output/analysis/genMisspelTest.txt";
-		String inpPath2 = "/home/durgesh9491/workspace/MTP/src/durgesh/too/output/analysis/Test.txt";
+		String inpPath1 = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/output/analysis/genMisspelTest.txt";
+		String inpPath2 = "/home/durgesh9491/workspace/MTP/src/durgesh/tool/output/analysis/Test.txt";
 		try {
 			FileReader fileReader = new FileReader(new File(inpPath1));
 			StringBuffer stringBuffer = new StringBuffer();
@@ -30,7 +30,7 @@ public class ResultAnalysis {
 			}
 			fileReader.close();
 			String correctString = stringBuffer.toString();
-			ArticleProcessor.spellProcessor2(target, correctString);
+			ArticleProcessor.testSpellProcessor(target, correctString);
 			int totalTokens = target.split(" ").length;
 			System.out.println("Total Real-word Errors: = " + totalTokens);
 			System.out.println("True Correct = " + myHit);

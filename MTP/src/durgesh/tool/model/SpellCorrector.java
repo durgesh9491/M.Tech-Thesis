@@ -1,4 +1,4 @@
-package durgesh.tool.MTech_thesis;
+package durgesh.tool.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,7 +15,7 @@ import java.util.Vector;
 class SpellCorrector extends NgramScore {
 	private static TreeMap<Double, String> treeMap = new TreeMap<Double, String>(
 			Collections.reverseOrder());
-	private static TreeMap<String, Boolean> makeUnique = new TreeMap<String, Boolean>();
+	private static HashMap<String, Boolean> makeUnique = new HashMap<String, Boolean>();
 	private static Vector<String> correctedWords = new Vector<String>();
 	private static TreeMap<Integer, String> candidates_1 = new TreeMap<Integer, String>();
 	private static TreeMap<Integer, String> candidates_2 = new TreeMap<Integer, String>();
@@ -68,7 +68,8 @@ class SpellCorrector extends NgramScore {
 		return candidates_2;
 	}
 
-	private static final Vector<String> findCandidates1(ArrayList<String> list) {
+	private static final Vector<String> testFindCandidates(
+			ArrayList<String> list) {
 		int cnt = 0;
 		Vector<String> res = new Vector<String>();
 		for (String s : list) {
@@ -78,7 +79,7 @@ class SpellCorrector extends NgramScore {
 						hashMap.put(s, true);
 						++cnt;
 						res.add(s);
-						if (cnt >= 5)
+						if (cnt >= 3)
 							break;
 					}
 				}
@@ -87,12 +88,12 @@ class SpellCorrector extends NgramScore {
 		return res;
 	}
 
-	public static final Vector<String> findNextCandidates1(
+	public static final Vector<String> testFindNextCandidates(
 			ArrayList<String> list) {
 		int cnt = 0;
 		Vector<String> res = new Vector<String>();
 		for (String s : list) {
-			if (cnt >= 5)
+			if (cnt >= 2)
 				break;
 			for (String w : edits(s)) {
 				if (ProcessDataSet.dicWords.containsKey(w)) {
@@ -101,7 +102,7 @@ class SpellCorrector extends NgramScore {
 							hashMap.put(w, true);
 							++cnt;
 							res.add(w);
-							if (cnt >= 5)
+							if (cnt >= 2)
 								break;
 						}
 					}
@@ -127,6 +128,10 @@ class SpellCorrector extends NgramScore {
 		correctedWords.clear();
 		treeMap.clear();
 		makeUnique.clear();
+		for (String s : tokens) {
+			System.out.print(s + " ");
+		}
+		System.out.println();
 		ArrayList<String> list = new ArrayList<String>(edits(target));
 		TreeMap<Integer, String> candidates = findCandidates(list);
 
@@ -156,7 +161,7 @@ class SpellCorrector extends NgramScore {
 				continue;
 			correctedWords.add(entry.getValue());
 			makeUnique.put(entry.getValue(), true);
-			if (++i > 2)
+			if (++i > 3)
 				break;
 		}
 		/*
@@ -184,28 +189,18 @@ class SpellCorrector extends NgramScore {
 				continue;
 			correctedWords.add(entry.getValue());
 			makeUnique.put(entry.getValue(), true);
-			if (++i > 3)
+			if (++i > 5)
 				break;
 		}
 		return correctedWords;
 	}
 
-	public static final Vector<String> correct1(String[] tokens, int idx,
+	public static final Vector<String> testCorrect(String[] tokens, int idx,
 			String target) {
-
-		/**
-		 * @param tokens
-		 *            contains the past history of the ongoing sentence
-		 * @param idx
-		 *            current index of the word
-		 * @param target
-		 *            word under consideration
-		 * @return list of candidate words eligible for spelling correction
-		 */
 		hashMap.clear();
 		ArrayList<String> list = new ArrayList<String>(edits(target));
-		Vector<String> candidates = new Vector<String>(findCandidates1(list));
-		candidates.addAll(findNextCandidates1(list));
+		Vector<String> candidates = new Vector<String>(testFindCandidates(list));
+		candidates.addAll(testFindNextCandidates(list));
 		return candidates;
 	}
 }

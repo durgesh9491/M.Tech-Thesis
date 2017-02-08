@@ -1,4 +1,4 @@
-package durgesh.tool.MTech_thesis;
+package durgesh.tool.model;
 
 /**
  * @author This module finds out the score of a word based on the words which
