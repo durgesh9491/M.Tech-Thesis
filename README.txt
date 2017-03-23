@@ -1,9 +1,5 @@
 # M.Tech_thesis
-<<<<<<< HEAD
-Context sensitive spelling error correction and word spinning using NLP
-=======
 Context sensitive spelling error correction and word spinning using NLP.
->>>>>>> Durgesh
 
 Research Area | Natural Language Processing.
 Work | Spelling correction, word spinning (synonym replacement).
