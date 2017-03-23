@@ -1,5 +1,5 @@
 # M.Tech_thesis
-Content Development in users writing style using Article Translator, Spell Corrector and Spinner.
+Context sensitive spelling error correction and word spinning using NLP
 
 Research Area | Natural Language Processing.
 Work | Spelling correction, word spinning (synonym replacement) and Article translation.
